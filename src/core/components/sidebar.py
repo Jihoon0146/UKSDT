@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (QWidget, QPushButton, QHBoxLayout, QLabel, QVBoxLay
 from PyQt5.QtCore import Qt, QPropertyAnimation, QEasingCurve, pyqtSignal, QParallelAnimationGroup
 from PyQt5.QtGui import QFont
 
-from ui_generated.ui_sidebar import Ui_Sidebar
+from .sidebar_ui import Ui_Sidebar
 from .settings_dialog import SettingsDialog
 
 class CollapsibleSidebarUI(QWidget):
@@ -77,7 +77,8 @@ class CollapsibleSidebarUI(QWidget):
         """툴 버튼들 설정"""
         tools = [
             ("Control_DR_Reviewer", "Control DR Reviewer", "🔍"),
-            ("ECO_PPT_Maker", "ECO PPT Maker", "📊")
+            ("ECO_PPT_Maker", "ECO PPT Maker", "📊"),
+            ("Externals", "Externals", "🔨")
         ]
         
         self.tool_buttons = []

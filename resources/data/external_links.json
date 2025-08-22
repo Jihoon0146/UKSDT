@@ -1,0 +1,22 @@
+{
+  "links": [
+    {
+      "id": "lnk_katms",
+      "label": "DX 관제",
+      "url": "https://katms.lge.com",
+      "icon": "system/default.png"
+    },
+    {
+      "id": "lnk_alm_2504",
+      "label": "ALM ~2504",
+      "url": "https://alm-lge.singlex.com/polarion/#/project/KitchenSWRelProjMgmtA/home",
+      "icon": "system/alm.png"
+    },
+    {
+      "id": "lnk_alm_2505",
+      "label": "ALM 2505~",
+      "url": "https://alm-lge.singlex.com/polarion/#/project/KitchenSWRelProjMgmtA25/home",
+      "icon": "system/alm.png"
+    }
+  ]
+}

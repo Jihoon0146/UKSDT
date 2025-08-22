@@ -6,8 +6,8 @@ import os
 import pandas as pd
 from datetime import datetime
 
-from ui_generated.ui_control_dr_reviewer import Ui_ControlDrReviewer
-from .components.check_item_widget import CheckItemWidget
+from .control_dr_reviewer_ui import Ui_ControlDrReviewer
+from .components.check_item import CheckItemWidget
 
 class ControlDRReviewerWidget(QWidget):
     """Control DR Reviewer 도구 위젯"""

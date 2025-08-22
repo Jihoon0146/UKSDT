@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QWidget, QButtonGroup, QFrame
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
 
-from ui_generated.ui_check_item import Ui_CheckItem
+from .check_item_ui import Ui_CheckItem
 
 class CheckItemWidget(QFrame):
     """
