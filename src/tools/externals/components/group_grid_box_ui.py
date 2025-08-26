@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './src/tools/externals/components/group_grid_box.ui'
+# Form implementation generated from reading ui file 'E:/Jihoon0146/UKSDT/src/tools/externals/components/group_grid_box.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -14,15 +14,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_GroupGridBox(object):
     def setupUi(self, GroupGridBox):
         GroupGridBox.setObjectName("GroupGridBox")
-        GroupGridBox.resize(720, 390)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(GroupGridBox.sizePolicy().hasHeightForWidth())
         GroupGridBox.setSizePolicy(sizePolicy)
-        GroupGridBox.setMinimumSize(QtCore.QSize(0, 390))
-        GroupGridBox.setMaximumSize(QtCore.QSize(16777215, 390))
+        GroupGridBox.setMinimumSize(QtCore.QSize(0, 0))
+        GroupGridBox.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.gridLayout = QtWidgets.QGridLayout(GroupGridBox)
+        self.gridLayout.setAlignment(QtCore.Qt.AlignTop|QtCore.Qt.AlignLeft)
         self.gridLayout.setContentsMargins(6, 24, 6, 6)
         self.gridLayout.setSpacing(6)
         self.gridLayout.setObjectName("gridLayout")

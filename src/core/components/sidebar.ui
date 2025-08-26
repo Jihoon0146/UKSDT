@@ -78,14 +78,6 @@
 								</property>
 								<item>
 									<widget class="QLabel" name="title_label">
-										<property name="font">
-											<font>
-												<family>Arial</family>
-												<pointsize>14</pointsize>
-												<weight>75</weight>
-												<bold>true</bold>
-											</font>
-										</property>
 										<property name="styleSheet">
 											<string notr="true"></string>
 										</property>
@@ -187,9 +179,6 @@
 						<enum>Qt::ScrollBarAlwaysOff</enum>
 					</property>
 					<widget class="QWidget" name="tools_widget">
-						<property name="styleSheet">
-							<string>background-color:rgb(82, 82, 82);</string>
-						</property>
 						<property name="geometry">
 							<rect>
 								<x>0</x>

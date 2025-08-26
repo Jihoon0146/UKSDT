@@ -100,6 +100,9 @@ class MainWindowUI(QMainWindow):
         if tool_id == "Externals":
             from tools.externals import ExternalsWidget
             return ExternalsWidget()
+        if tool_id == "Projects":
+            from tools.projects import ProjectsWidget
+            return ProjectsWidget()
         else:
             # 기본 임시 위젯
             tool_widget = QWidget()
@@ -131,8 +134,10 @@ class MainWindowUI(QMainWindow):
         """툴 선택 시 호출"""
         # 툴 이름 매핑
         tool_names = {
+            "Projects": "Projects",
             "Control_DR_Reviewer": "Control DR Reviewer",
-            "ECO_PPT_Maker": "ECO PPT Maker"
+            "ECO_PPT_Maker": "ECO PPT Maker",
+            "Externals": "Externals"
         }
         
         tool_name = tool_names.get(tool_id, tool_id)

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ProjectDetailForm</class>
+ <widget class="QWidget" name="ProjectDetailForm">
+  <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupInfo">
+     <property name="title"><string>프로젝트 정보</string></property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0"><widget class="QLabel" name="lblId"><property name="text"><string>ID</string></property></widget></item>
+      <item row="0" column="1"><widget class="QLabel" name="valId"><property name="text"><string>-</string></property></widget></item>
+
+      <item row="1" column="0"><widget class="QLabel" name="lblName"><property name="text"><string>이름</string></property></widget></item>
+      <item row="1" column="1"><widget class="QLineEdit" name="editName"/></item>
+
+      <item row="2" column="0"><widget class="QLabel" name="lblOwner"><property name="text"><string>소유자</string></property></widget></item>
+      <item row="2" column="1"><widget class="QLineEdit" name="editOwner"/></item>
+
+      <item row="3" column="0"><widget class="QLabel" name="lblStatus"><property name="text"><string>상태</string></property></widget></item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="comboStatus">
+        <item><property name="text"><string>in_progress</string></property></item>
+        <item><property name="text"><string>completed</string></property></item>
+       </widget>
+      </item>
+
+      <item row="4" column="0"><widget class="QLabel" name="lblWrapper"><property name="text"><string>랩퍼</string></property></widget></item>
+      <item row="4" column="1"><widget class="QComboBox" name="comboWrapper"/></item>
+
+      <item row="5" column="0"><widget class="QLabel" name="lblStart"><property name="text"><string>시작일</string></property></widget></item>
+      <item row="5" column="1"><widget class="QDateEdit" name="dateStart"><property name="calendarPopup"><bool>true</bool></property></widget></item>
+
+      <item row="6" column="0"><widget class="QLabel" name="lblEnd"><property name="text"><string>종료일</string></property></widget></item>
+      <item row="6" column="1"><widget class="QDateEdit" name="dateEnd"><property name="calendarPopup"><bool>true</bool></property></widget></item>
+
+      <item row="7" column="0"><widget class="QLabel" name="lblType"><property name="text"><string>유형</string></property></widget></item>
+      <item row="7" column="1">
+       <widget class="QComboBox" name="comboType">
+        <item><property name="text"><string>project</string></property></item>
+       </widget>
+      </item>
+
+      <item row="8" column="0"><widget class="QLabel" name="lblNotes"><property name="text"><string>메모</string></property></widget></item>
+      <item row="8" column="1"><widget class="QPlainTextEdit" name="editNotes"/></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonLayout">
+     <item><widget class="QPushButton" name="btnSave"><property name="text"><string>저장</string></property></widget></item>
+     <item><widget class="QPushButton" name="btnReset"><property name="text"><string>되돌리기</string></property></widget></item>
+     <item><spacer name="spacer"><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

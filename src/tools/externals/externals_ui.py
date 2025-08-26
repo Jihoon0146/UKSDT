@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './src/tools/externals/externals.ui'
+# Form implementation generated from reading ui file 'E:/Jihoon0146/UKSDT/src/tools/externals/externals.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -21,7 +21,7 @@ class Ui_Externals(object):
         Externals.setSizePolicy(sizePolicy)
         Externals.setStyleSheet("")
         self.main_layout = QtWidgets.QVBoxLayout(Externals)
-        self.main_layout.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
+        self.main_layout.setSizeConstraint(QtWidgets.QLayout.SetMinAndMaxSize)
         self.main_layout.setContentsMargins(20, 20, 20, 20)
         self.main_layout.setSpacing(10)
         self.main_layout.setObjectName("main_layout")

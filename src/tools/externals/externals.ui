@@ -19,7 +19,7 @@
     <number>10</number>
    </property>
    <property name="sizeConstraint">
-    <enum>QLayout::SetMinimumSize</enum>
+    <enum>QLayout::SetMinAndMaxSize</enum>
    </property>
    <property name="leftMargin">
     <number>20</number>

@@ -1,0 +1,96 @@
+{
+  "wrappers": [
+    { "id": "w1", "name": "UX 개선 랩퍼", "type": "wrapper", "status": "in_progress" },
+    { "id": "w2", "name": "출시 완료 묶음", "type": "wrapper", "status": "completed" }
+  ],
+  "projects": [
+    {
+      "id": "p1",
+      "name": "냉장고 상태모델",
+      "type": "project",
+      "status": "in_progress",
+      "wrapper_id": "w1",
+      "owner": "김지훈",
+      "start_date": "2025-06-01",
+      "end_date": "2025-09-30",
+      "notes": "상태 전이 조정"
+    },
+    {
+      "id": "p2",
+      "name": "정수기 제어 검증",
+      "type": "project",
+      "status": "completed",
+      "wrapper_id": "w1",
+      "owner": "박유진",
+      "start_date": "2025-05-15",
+      "end_date": "2025-08-31",
+      "notes": "랩퍼(in_progress) 내 완료 프로젝트(불일치 케이스)"
+    },
+    {
+      "id": "p3",
+      "name": "FW 배포 파이프라인",
+      "type": "project",
+      "status": "in_progress",
+      "wrapper_id": "w2",
+      "owner": "이도윤",
+      "start_date": "2025-04-10",
+      "end_date": "2025-10-01",
+      "notes": "랩퍼(completed) 내 진행 중 프로젝트(불일치 케이스)"
+    },
+    {
+      "id": "p4",
+      "name": "출시 안정화 리그레이션",
+      "type": "project",
+      "status": "completed",
+      "wrapper_id": "w2",
+      "owner": "최가온",
+      "start_date": "2025-02-10",
+      "end_date": "2025-07-01",
+      "notes": ""
+    },
+    {
+      "id": "p5",
+      "name": "센서 캘리브레이션",
+      "type": "project",
+      "status": "in_progress",
+      "wrapper_id": null,
+      "owner": "정세진",
+      "start_date": "2025-07-01",
+      "end_date": "2025-11-30",
+      "notes": ""
+    },
+    {
+      "id": "p6",
+      "name": "진동 억제 알고리즘",
+      "type": "project",
+      "status": "completed",
+      "wrapper_id": null,
+      "owner": "박상우",
+      "start_date": "2024-12-01",
+      "end_date": "2025-03-31",
+      "notes": ""
+    },
+    {
+      "id": "p7",
+      "name": "UI 접근성 개선",
+      "type": "project",
+      "status": "in_progress",
+      "wrapper_id": "w1",
+      "owner": "유소연",
+      "start_date": "2025-06-20",
+      "end_date": "2025-09-15",
+      "notes": ""
+    },
+    {
+      "id": "p8",
+      "name": "릴리즈 노트 자동화",
+      "type": "project",
+      "status": "completed",
+      "wrapper_id": "w2",
+      "owner": "한도윤",
+      "start_date": "2025-01-05",
+      "end_date": "2025-06-25",
+      "notes": ""
+    }
+  ]
+}

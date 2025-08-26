@@ -12,6 +12,7 @@ Requirements:
 
 from pathlib import Path
 from PyQt5.QtWidgets import QWidget, QSizePolicy
+from PyQt5.QtCore import Qt
 
 # compiled UI
 from .externals_ui import Ui_Externals  # rename your generated file to externals_ui.py or adjust import path
@@ -42,15 +43,14 @@ class ExternalsWidget(QWidget):
         self.grid_bottom.setTitle("프로젝트/릴리즈 링크")
 
         # size policy: horizontal expanding, vertical fixed height per GroupGrid 설계(3행)
-        spx = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.grid_top.setSizePolicy(spx)
-        self.grid_bottom.setSizePolicy(spx)
+        self.grid_top.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed))
+        self.grid_bottom.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
 
         # add to UI layout (compiled: self.main_layout)
         # 체크리스트 레이아웃 가져오기
                 
-        self.ui.main_layout.addWidget(self.grid_top)
-        self.ui.main_layout.addWidget(self.grid_bottom)
+        self.ui.main_layout.addWidget(self.grid_top, alignment=Qt.AlignTop)
+        self.ui.main_layout.addWidget(self.grid_bottom, alignment=Qt.AlignTop)
 
         # spacing between the two grids is already controlled by main_layout.spacing()
 

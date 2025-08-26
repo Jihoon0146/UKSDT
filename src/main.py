@@ -5,6 +5,10 @@ import locale
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import Qt, QFile, QTextStream
 from PyQt5.QtGui import QFontDatabase, QFont
+import qdarkstyle
+
+def apply_qdark_theme(app):
+    app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
 
 def apply_gtronick_theme(app):
     """GTRONICK QSS 테마 적용"""
@@ -29,6 +33,12 @@ def apply_gtronick_theme(app):
         print(f"\tTheme : GTRONICK --- Fail. Can not adapt. {e}")
         print("\tTheme : Use default theme.")
         return False
+def setup_custom_theme(app):
+    #apply_gtronick_theme(app)
+    apply_qdark_theme(app)
+
+
+
 
 def setup_custom_font(app):
     try:
@@ -84,8 +94,7 @@ def main():
     # 커스텀 폰트 설정 (테마 적용 전에)
     setup_custom_font(app)
     
-    # GTRONICK QSS 테마 적용
-    apply_gtronick_theme(app)
+    setup_custom_theme(app)
      
     # 현재 디렉토리를 Python 경로에 추가
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))

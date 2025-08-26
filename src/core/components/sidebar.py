@@ -1,10 +1,22 @@
-from PyQt5.QtWidgets import (QWidget, QPushButton, QHBoxLayout, QLabel, QVBoxLayout, 
+from PyQt5.QtWidgets import (QWidget, QToolButton, QPushButton, QHBoxLayout, QLabel, QVBoxLayout, 
                              QFrame, QSizePolicy)
-from PyQt5.QtCore import Qt, QPropertyAnimation, QEasingCurve, pyqtSignal, QParallelAnimationGroup
-from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt, QPropertyAnimation, QEasingCurve, pyqtSignal, QParallelAnimationGroup, QSize
+from PyQt5.QtGui import QPixmap, QPainter, QFont, QIcon
 
 from .sidebar_ui import Ui_Sidebar
 from .settings_dialog import SettingsDialog
+
+def emoji_icon(emoji: str, size: int = 42) -> QIcon:
+    pixmap = QPixmap(size, size)
+    pixmap.fill(Qt.transparent)
+
+    painter = QPainter(pixmap)
+    font = QFont("Segoe UI Emoji", size * 0.7)  # Emoji 전용 폰트 사용
+    painter.setFont(font)
+    painter.drawText(pixmap.rect(), Qt.AlignCenter, emoji)
+    painter.end()
+
+    return QIcon(pixmap)
 
 class CollapsibleSidebarUI(QWidget):
     """QtDesigner UI를 사용하는 접기/펼치기 가능한 사이드바"""
@@ -76,9 +88,10 @@ class CollapsibleSidebarUI(QWidget):
     def setup_tools(self):
         """툴 버튼들 설정"""
         tools = [
-            ("Control_DR_Reviewer", "Control DR Reviewer", "🔍"),
-            ("ECO_PPT_Maker", "ECO PPT Maker", "📊"),
-            ("Externals", "Externals", "🔨")
+            ("Projects", "Projects", emoji_icon("📂")),
+            ("Control_DR_Reviewer", "Control DR Reviewer", emoji_icon("🔍")),
+            ("ECO_PPT_Maker", "ECO PPT Maker", emoji_icon("📊")),
+            ("Externals", "Externals", emoji_icon("🔨"))
         ]
         
         self.tool_buttons = []
@@ -97,43 +110,28 @@ class CollapsibleSidebarUI(QWidget):
         self.ui.tools_layout.addStretch()
         
     def create_tool_button(self, tool_id, tool_name, icon):
-        """툴 버튼 생성 - 텍스트 크기에 맞게 자동 조정 및 클리핑 방지"""
-        btn = QPushButton()
+        btn = QToolButton()
+        btn.setCheckable(False)
+        btn.setAutoRaise(False)
+        btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         btn.setCursor(Qt.PointingHandCursor)
+        btn.setText("     " + tool_name or "")
+        btn.setIcon(icon)
+        btn.setIconSize(QSize(32, 32))
+        
+
+        """툴 버튼 생성 - 텍스트 크기에 맞게 자동 조정 및 클리핑 방지"""
+        
         
         # 버튼 크기 정책 - 수직은 최소 크기를 보장하되 확장 가능하게 설정
         btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         
         # 최소 높이 설정으로 클리핑 방지 및 터치 친화성 확보
         btn.setMinimumHeight(40)  # 최소 40px 높이 보장
-        
-        # 버튼 레이아웃
-        layout = QHBoxLayout(btn)
-        layout.setContentsMargins(12, 10, 12, 10)  # 상하 패딩 증가 (8px -> 10px)
-        layout.setSpacing(8)  # 아이콘과 텍스트 사이 간격
-        
-        # 아이콘 라벨
-        icon_label = QLabel(icon)
-        icon_label.setAlignment(Qt.AlignCenter)
-        icon_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        layout.addWidget(icon_label)
-        
-        # 텍스트 라벨
-        text_label = QLabel(tool_name)
-        text_label.setAlignment(Qt.AlignVCenter)  # 수직 중앙 정렬 추가
-        text_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        text_label.setWordWrap(True)  # 긴 텍스트의 경우 줄바꿈 허용 (필요시)
-        layout.addWidget(text_label)
-        
-        # 기본 시스템 스타일 사용
-        
+           
         # 클릭 이벤트
         btn.clicked.connect(lambda checked, tid=tool_id: self.tool_selected.emit(tid))
-        
-        # 접혔을 때 표시할 라벨들 저장
-        btn.icon_label = icon_label
-        btn.text_label = text_label
-        
+
         return btn
         
     def setup_connections(self):
@@ -171,7 +169,7 @@ class CollapsibleSidebarUI(QWidget):
         
         # 텍스트 라벨 숨기기
         for btn in self.tool_buttons:
-            btn.text_label.hide()
+            btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonIconOnly)
         
         # 설정 버튼은 접혀도 보이도록 유지 (아이콘만)
         self.ui.settings_btn.setText("⚙")
@@ -202,7 +200,7 @@ class CollapsibleSidebarUI(QWidget):
         
         # 텍스트 라벨 표시
         for btn in self.tool_buttons:
-            btn.text_label.show()
+            btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         
         # 설정 버튼은 항상 아이콘으로 표시
         self.ui.settings_btn.setText("⚙")

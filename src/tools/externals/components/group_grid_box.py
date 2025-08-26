@@ -21,10 +21,10 @@ from PyQt5.QtGui import QDesktopServices
 
 from .group_grid_box_ui import Ui_GroupGridBox
 
-CELL_W = 120
-CELL_H = 120
-ICON_W = 72
-ICON_H = 72
+CELL_W = 80
+CELL_H = 80
+ICON_W = 48
+ICON_H = 48
 
 class GroupGridWidget(QGroupBox, Ui_GroupGridBox):
     columnsChanged = QtCore.pyqtSignal(int)
@@ -33,7 +33,7 @@ class GroupGridWidget(QGroupBox, Ui_GroupGridBox):
         super().__init__(parent)
         self.setupUi(self)  # from compiled UI
         assert isinstance(self.gridLayout, QGridLayout)
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # Fix height to 3 rows
         spacing = self.gridLayout.spacing()
@@ -41,7 +41,6 @@ class GroupGridWidget(QGroupBox, Ui_GroupGridBox):
         # Add approx title band (style dependent); keep same as ui (24 top margin already accounts for label)
         total_h = (CELL_H * 3) + (spacing * (3 - 1)) + margins.top() + margins.bottom()
         self.setMinimumHeight(total_h)
-        self.setMaximumHeight(total_h)
 
         self._items: List[QtWidgets.QWidget] = []
         self._last_cols = -1
