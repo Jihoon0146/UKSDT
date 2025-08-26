@@ -11,7 +11,7 @@ def emoji_icon(emoji: str, size: int = 42) -> QIcon:
     pixmap.fill(Qt.transparent)
 
     painter = QPainter(pixmap)
-    font = QFont("Segoe UI Emoji", size * 0.7)  # Emoji 전용 폰트 사용
+    font = QFont("Segoe UI Emoji", int(size * 0.7))  # Emoji 전용 폰트 사용
     painter.setFont(font)
     painter.drawText(pixmap.rect(), Qt.AlignCenter, emoji)
     painter.end()

@@ -109,3 +109,6 @@ exports/
 # Configuration files with sensitive data
 config/secrets.json
 config/local_settings.py
+
+# Claude Code
+.claude/settings.local.json

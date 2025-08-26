@@ -1,6 +1,6 @@
 # app/tree_panel.py
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
 from .prj_treeview_ui import Ui_ProjectsTreeView
 
 class ProjectsTreeViewWidget(QWidget):
@@ -20,6 +20,15 @@ class ProjectsTreeViewWidget(QWidget):
     def setModel(self, model):
         self.ui.treeProjects.setModel(model)
         self.ui.treeProjects.expandAll()
+        
+        # '완료' 루트를 접힌 상태로 설정
+        if model.rowCount() >= 2:  # 진행 중, 완료 순서
+            completed_index = model.index(1, 0)  # 두 번째 루트 (완료)
+            if completed_index.isValid():
+                collapsed_flag = model.data(completed_index, Qt.UserRole + 10)
+                if collapsed_flag:
+                    self.ui.treeProjects.setExpanded(completed_index, False)
+        
         sel = self.ui.treeProjects.selectionModel()
         if sel is not None:
             sel.selectionChanged.connect(self._emit_selection)

@@ -22,6 +22,9 @@ def build_tree_model(data_model):
     }
     for b in buckets.values():
         model.appendRow(b)
+    
+    # '완료' 루트는 기본적으로 접힌 상태로 표시하기 위한 플래그 설정
+    buckets["completed"].setData(True, Qt.UserRole + 10)  # ROLE_COLLAPSED = Qt.UserRole + 10
 
     # group wrappers by status
     wrappers_by_status = {"in_progress": [], "completed": []}

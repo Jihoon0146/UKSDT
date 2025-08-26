@@ -33,6 +33,8 @@
      </widget>
      <widget class="QWidget" name="pageProjectDetail">
      </widget>
+     <widget class="QWidget" name="pageWrapperDetail">
+     </widget>
     </widget>
    </item>
   </layout>
