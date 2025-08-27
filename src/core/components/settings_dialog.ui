@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsDialog</class>
+ <widget class="QDialog" name="SettingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>UKSDT 설정</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tab_widget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="account_tab">
+      <attribute name="title">
+       <string>Account</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="account_layout">
+       <item>
+        <widget class="QGroupBox" name="login_group">
+         <property name="title">
+          <string>로그인 정보</string>
+         </property>
+         <layout class="QFormLayout" name="login_form_layout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="user_id_label">
+            <property name="text">
+             <string>사용자 ID:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="user_id_edit"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="password_label">
+            <property name="text">
+             <string>비밀번호:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="password_edit">
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="auto_login_check">
+            <property name="text">
+             <string>자동 로그인</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <layout class="QHBoxLayout" name="login_buttons_layout">
+            <item>
+             <widget class="QPushButton" name="login_btn">
+              <property name="text">
+               <string>로그인</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="logout_btn">
+              <property name="text">
+               <string>로그아웃</string>
+              </property>
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="login_buttons_spacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="login_status_group">
+         <property name="title">
+          <string>로그인 상태</string>
+         </property>
+         <layout class="QVBoxLayout" name="status_layout">
+          <item>
+           <widget class="QLabel" name="current_status_label">
+            <property name="text">
+             <string>🔒 로그인되지 않음</string>
+            </property>
+            <property name="styleSheet">
+             <string>font-size: 12pt; padding: 8px;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="last_login_label">
+            <property name="text">
+             <string>마지막 로그인: -</string>
+            </property>
+            <property name="styleSheet">
+             <string>color: #7f8c8d; font-style: italic;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="account_settings_group">
+         <property name="title">
+          <string>계정 설정</string>
+         </property>
+         <layout class="QVBoxLayout" name="account_settings_layout">
+          <item>
+           <widget class="QPushButton" name="change_password_btn">
+            <property name="text">
+             <string>비밀번호 변경</string>
+            </property>
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="clear_credentials_btn">
+            <property name="text">
+             <string>저장된 인증 정보 삭제</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="account_spacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="about_tab">
+      <attribute name="title">
+       <string>About</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="about_layout">
+       <item>
+        <layout class="QHBoxLayout" name="logo_layout">
+         <item>
+          <spacer name="logo_left_spacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="logo_label">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>120</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>120</width>
+             <height>120</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>LOGO</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="styleSheet">
+            <string>border: 2px dashed #7f8c8d; 
+color: #7f8c8d;
+font-size: 14pt;
+font-weight: bold;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="logo_right_spacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="app_title_label">
+         <property name="text">
+          <string>UKSDT</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="styleSheet">
+          <string>font-size: 24pt; 
+font-weight: bold; 
+color: #2c3e50;
+margin: 10px;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="app_subtitle_label">
+         <property name="text">
+          <string>United Korea Software Development Tools</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="styleSheet">
+          <string>font-size: 12pt; 
+color: #7f8c8d;
+font-style: italic;
+margin-bottom: 20px;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="app_info_group">
+         <property name="title">
+          <string>애플리케이션 정보</string>
+         </property>
+         <layout class="QFormLayout" name="app_info_layout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="version_title_label">
+            <property name="text">
+             <string>버전:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="version_label">
+            <property name="text">
+             <string>1.0.0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="build_title_label">
+            <property name="text">
+             <string>빌드:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="build_label">
+            <property name="text">
+             <string>2025.08.27</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="developer_title_label">
+            <property name="text">
+             <string>개발자:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="developer_label">
+            <property name="text">
+             <string>UKSDT Development Team</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="license_title_label">
+            <property name="text">
+             <string>라이선스:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="license_label">
+            <property name="text">
+             <string>Proprietary</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="description_group">
+         <property name="title">
+          <string>설명</string>
+         </property>
+         <layout class="QVBoxLayout" name="description_layout">
+          <item>
+           <widget class="QLabel" name="description_label">
+            <property name="text">
+             <string>UKSDT는 통합 소프트웨어 개발 도구로서, 
+프로젝트 관리, Control DR 리뷰, 
+그리고 다양한 개발 작업을 효율적으로 
+수행할 수 있도록 지원합니다.
+
+개발자들의 생산성 향상과 
+협업 효율성 증대를 목표로 합니다.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignTop</set>
+            </property>
+            <property name="styleSheet">
+             <string>line-height: 1.4; 
+color: #2c3e50;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="about_spacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="button_layout">
+     <item>
+      <spacer name="button_spacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="apply_btn">
+       <property name="text">
+        <string>적용</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ok_btn">
+       <property name="text">
+        <string>확인</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancel_btn">
+       <property name="text">
+        <string>취소</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

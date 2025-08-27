@@ -32,6 +32,9 @@ class CollapsibleSidebarUI(QWidget):
         self.collapsed_width = int(60 * 1.1)  # 110% = 66px
         self.is_expanded = True
         
+        # LoginManager 참조
+        self.login_manager = None
+        
         self.setup_ui()
         self.setup_tools()
         self.setup_connections()
@@ -73,11 +76,27 @@ class CollapsibleSidebarUI(QWidget):
         """하단 설정 영역 연결 - UI 파일에서 이미 생성됨"""
         # UI 파일에서 이미 settings_btn이 생성되어 있으므로 연결만 수행
         self.ui.settings_btn.clicked.connect(self.show_settings)
+        
+        # 로그인 상태 라벨 추가
+        self.login_status_label = QLabel("🔒 Unauthenticated")
+        self.login_status_label.setStyleSheet("""QLabel {
+            color: #7f8c8d;
+            font-size: 10pt;
+            padding: 4px;
+            border-radius: 3px;
+            background-color: rgba(127, 140, 141, 0.1);
+        }""")
+        # settings_btn 왼쪽에 삽입
+        layout = self.ui.settings_widget.layout()
+        if layout:
+            layout.insertWidget(0, self.login_status_label)
             
     def show_settings(self):
         """설정 다이얼로그 표시"""
-        settings_dialog = SettingsDialog(self)
+        settings_dialog = SettingsDialog(self, self.login_manager)
         settings_dialog.settings_changed.connect(self.on_settings_changed)
+        settings_dialog.login_requested.connect(self.handle_login_request)
+        settings_dialog.logout_requested.connect(self.handle_logout_request)
         settings_dialog.exec_()
         
     def on_settings_changed(self):
@@ -128,6 +147,17 @@ class CollapsibleSidebarUI(QWidget):
         
         # 최소 높이 설정으로 클리핑 방지 및 터치 친화성 확보
         btn.setMinimumHeight(40)  # 최소 40px 높이 보장
+        
+        # 비활성화 상태 스타일 설정
+        btn.setStyleSheet("""
+            QToolButton:disabled {
+                color: #7f8c8d;
+                background-color: rgba(127, 140, 141, 0.1);
+            }
+            QToolButton:disabled:hover {
+                background-color: rgba(127, 140, 141, 0.2);
+            }
+        """)
            
         # 클릭 이벤트
         btn.clicked.connect(lambda checked, tid=tool_id: self.tool_selected.emit(tid))
@@ -204,5 +234,46 @@ class CollapsibleSidebarUI(QWidget):
         
         # 설정 버튼은 항상 아이콘으로 표시
         self.ui.settings_btn.setText("⚙")
+        
+        # 로그인 상태 라벨도 표시
+        if hasattr(self, 'login_status_label'):
+            self.login_status_label.show()
             
         self.is_expanded = True
+    
+    def set_login_manager(self, login_manager):
+        """로그인 매니저 설정"""
+        self.login_manager = login_manager
+        self.update_login_status()
+    
+    def update_login_status(self):
+        """로그인 상태 업데이트"""
+        if not hasattr(self, 'login_status_label'):
+            return
+            
+        if self.login_manager and self.login_manager.is_authenticated():
+            user_id = self.login_manager.get_current_user()
+            text = f"🔐 Authenticated: {user_id}"
+            color = "#27ae60"  # 초록색
+        else:
+            text = "🔒 Unauthenticated"
+            color = "#7f8c8d"  # 회색
+        
+        self.login_status_label.setText(text)
+        self.login_status_label.setStyleSheet(f"""QLabel {{
+            color: {color};
+            font-size: 10pt;
+            padding: 4px;
+            border-radius: 3px;
+            background-color: rgba(127, 140, 141, 0.1);
+        }}""")
+    
+    def handle_login_request(self, user_id: str, password: str, auto_login: bool):
+        """로그인 요청 처리"""
+        if self.login_manager:
+            self.login_manager.login(user_id, password, auto_login)
+    
+    def handle_logout_request(self):
+        """로그아웃 요청 처리"""
+        if self.login_manager:
+            self.login_manager.logout()

@@ -6,6 +6,7 @@ from .main_window_ui import Ui_MainWindow
 from .components.welcome_page_ui import Ui_WelcomePage
 from .components.sidebar import CollapsibleSidebarUI
 from .components.custom_tab_widget import CustomTabWidget
+from .auth import LoginManager
 
 class MainWindowUI(QMainWindow):
     """QtDesigner UI를 사용하는 메인 윈도우"""
@@ -20,8 +21,15 @@ class MainWindowUI(QMainWindow):
         # 열린 탭들을 추적
         self.open_tabs = {}
         
+        # LoginManager 생성 및 초기화
+        self.login_manager = LoginManager()
+        self.setup_login_manager()
+        
         self.setup_ui()
         self.setup_connections()
+        
+        # 애플리케이션 시작 시 로그인 처리
+        self.handle_initial_login()
         
     def setup_ui(self):
         """UI 추가 설정"""
@@ -60,6 +68,7 @@ class MainWindowUI(QMainWindow):
         # 올바른 순서로 위젯들 추가
         # 1. 사이드바 (왼쪽, index 0)
         self.sidebar = CollapsibleSidebarUI()
+        self.sidebar.set_login_manager(self.login_manager)  # LoginManager 전달
         self.splitter.addWidget(self.sidebar)
         
         # 2. 콘텐츠 영역 (오른쪽, index 1)
@@ -125,6 +134,13 @@ class MainWindowUI(QMainWindow):
             
             return tool_widget
         
+    def setup_login_manager(self):
+        """로그인 매니저 설정"""
+        # 로그인 관련 시그널 연결
+        self.login_manager.login_successful.connect(self.on_login_successful)
+        self.login_manager.login_failed.connect(self.on_login_failed)
+        self.login_manager.logout_completed.connect(self.on_logout_completed)
+    
     def setup_connections(self):
         """시그널 연결"""
         self.sidebar.tool_selected.connect(self.on_tool_selected)
@@ -132,6 +148,12 @@ class MainWindowUI(QMainWindow):
         
     def on_tool_selected(self, tool_id):
         """툴 선택 시 호출"""
+        # 로그인 상태 확인
+        if not self.login_manager.is_authenticated():
+            # 로그인되지 않았으면 설정 다이얼로그 표시
+            self.show_login_dialog()
+            return
+            
         # 툴 이름 매핑
         tool_names = {
             "Projects": "Projects",
@@ -200,6 +222,64 @@ class MainWindowUI(QMainWindow):
             # 홈 탭으로 자동 전환
             self.ui.tool_tabs.setCurrentIndex(self.home_tab_index)
         
+    def on_login_successful(self, user_id: str):
+        """로그인 성공 시 처리"""
+        print(f"로그인 성공: {user_id}")
+        # 사이드바 로그인 상태 업데이트
+        if hasattr(self, 'sidebar'):
+            self.sidebar.update_login_status()
+        # 툴 접근 권한 업데이트
+        self.update_tool_access()
+    
+    def on_login_failed(self, error_message: str):
+        """로그인 실패 시 처리"""
+        print(f"로그인 실패: {error_message}")
+        # 필요시 에러 다이얼로그 표시 가능
+    
+    def on_logout_completed(self):
+        """로그아웃 완료 시 처리"""
+        print("로그아웃 완료")
+        # 사이드바 로그인 상태 업데이트
+        if hasattr(self, 'sidebar'):
+            self.sidebar.update_login_status()
+        # 툴 접근 권한 업데이트
+        self.update_tool_access()
+    
+    def handle_initial_login(self):
+        """애플리케이션 시작 시 로그인 처리"""
+        # 자동 로그인 시도
+        if not self.login_manager.auto_login():
+            # 자동 로그인 실패시 저장된 인증 정보 확인
+            saved_creds = self.login_manager.get_saved_credentials()
+            if not saved_creds:
+                # 저장된 로그인 정보가 없으면 설정 다이얼로그 자동 표시
+                self.show_login_dialog()
+        
+        # 초기 툴 상태 업데이트
+        self.update_tool_access()
+    
+    def show_login_dialog(self):
+        """로그인을 위해 설정 다이얼로그 표시"""
+        if hasattr(self, 'sidebar'):
+            self.sidebar.show_settings()
+    
+    def update_tool_access(self):
+        """로그인 상태에 따라 툴 접근 권한 업데이트"""
+        is_authenticated = self.login_manager.is_authenticated()
+        
+        if hasattr(self, 'sidebar'):
+            # 사이드바의 툴 버튼들 활성화/비활성화
+            for btn in self.sidebar.tool_buttons:
+                btn.setEnabled(is_authenticated)
+                if is_authenticated:
+                    btn.setToolTip("")
+                else:
+                    btn.setToolTip("로그인이 필요합니다.")
+    
+    def get_login_manager(self):
+        """로그인 매니저 반환"""
+        return self.login_manager
+    
     def resizeEvent(self, event):
         """창 크기 변경 이벤트"""
         super().resizeEvent(event)
