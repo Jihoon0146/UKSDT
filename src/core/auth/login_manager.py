@@ -82,24 +82,64 @@ class LoginManager(QObject):
     def _check_svn_access(self, user_id: str, password: str) -> bool:
         """2단계: SVN 접근 가능 확인"""
         try:
-            # SVN 명령어 실행 (테스트용으로 간단한 확인)
-            if os.path.exists(self.svn_url):
-                # 로컬 디렉토리가 있다면 접근 가능으로 간주
-                return True
-            else:
-                # 실제 SVN 서버 확인이 필요한 경우
-                # subprocess를 사용해서 svn info 명령 실행
-                cmd = [
-                    "svn", "info", self.svn_url,
-                    "--username", user_id,
-                    "--password", password,
-                    "--non-interactive",
-                    "--trust-server-cert"
-                ]
-                result = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
-                return result.returncode == 0
+            # 로컬 디렉토리 확인
+            if os.path.exists(self.svn_url) and os.path.isdir(self.svn_url):
+                # 로컬 SVN 디렉토리인지 확인
+                svn_dir = os.path.join(self.svn_url, '.svn')
+                if os.path.exists(svn_dir):
+                    return True
+            
+            # 원격 SVN 서버 확인
+            return self._test_svn_connection(self.svn_url, user_id, password)
+            
         except Exception as e:
             print(f"SVN 접근 확인 오류: {e}")
+            return False
+    
+    def _test_svn_connection(self, svn_url: str, username: str, password: str) -> bool:
+        """SVN 서버 연결 테스트"""
+        try:
+            cmd = [
+                "svn", "info", svn_url,
+                "--username", username,
+                "--password", password,
+                "--non-interactive",
+                "--trust-server-cert",
+                "--no-auth-cache"
+            ]
+            
+            # Windows 환경에서 창이 뜨지 않도록 설정
+            startupinfo = None
+            if os.name == 'nt':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+            
+            result = subprocess.run(
+                cmd, 
+                capture_output=True, 
+                text=True, 
+                timeout=30,
+                startupinfo=startupinfo
+            )
+            
+            if result.returncode == 0:
+                return True
+            else:
+                # 상세한 에러 정보 로깅
+                print(f"SVN 연결 실패 (코드: {result.returncode})")
+                if result.stderr:
+                    print(f"SVN 에러: {result.stderr.strip()}")
+                return False
+                
+        except subprocess.TimeoutExpired:
+            print("SVN 서버 연결 시간 초과")
+            return False
+        except FileNotFoundError:
+            print("SVN 클라이언트가 설치되지 않았거나 PATH에 없습니다")
+            return False
+        except Exception as e:
+            print(f"SVN 연결 테스트 오류: {e}")
             return False
     
     def _check_auto_list(self, user_id: str) -> bool:
@@ -227,3 +267,133 @@ class LoginManager(QObject):
         """SVN 설정 변경"""
         self.svn_url = svn_url
         self.auto_list_path = auto_list_path
+    
+    def svn_checkout(self, local_path: str, username: str = None, password: str = None) -> bool:
+        """SVN 체크아웃"""
+        try:
+            if not username and self._current_user:
+                username = self._current_user
+            
+            if not username:
+                print("SVN 체크아웃을 위한 사용자 인증 정보가 없습니다")
+                return False
+            
+            cmd = [
+                "svn", "checkout", self.svn_url, local_path,
+                "--username", username,
+                "--non-interactive",
+                "--trust-server-cert"
+            ]
+            
+            if password:
+                cmd.extend(["--password", password])
+            
+            startupinfo = None
+            if os.name == 'nt':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+            
+            result = subprocess.run(
+                cmd, 
+                capture_output=True, 
+                text=True, 
+                timeout=300,
+                startupinfo=startupinfo
+            )
+            
+            if result.returncode == 0:
+                print(f"SVN 체크아웃 성공: {local_path}")
+                return True
+            else:
+                print(f"SVN 체크아웃 실패 (코드: {result.returncode})")
+                if result.stderr:
+                    print(f"에러: {result.stderr.strip()}")
+                return False
+                
+        except subprocess.TimeoutExpired:
+            print("SVN 체크아웃 시간 초과")
+            return False
+        except Exception as e:
+            print(f"SVN 체크아웃 오류: {e}")
+            return False
+    
+    def svn_update(self, local_path: str, username: str = None, password: str = None) -> bool:
+        """SVN 업데이트"""
+        try:
+            if not username and self._current_user:
+                username = self._current_user
+                
+            if not os.path.exists(local_path):
+                print(f"경로가 존재하지 않습니다: {local_path}")
+                return False
+            
+            cmd = ["svn", "update", local_path, "--non-interactive"]
+            
+            if username:
+                cmd.extend(["--username", username])
+            if password:
+                cmd.extend(["--password", password])
+            
+            startupinfo = None
+            if os.name == 'nt':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+            
+            result = subprocess.run(
+                cmd, 
+                capture_output=True, 
+                text=True, 
+                timeout=300,
+                startupinfo=startupinfo
+            )
+            
+            if result.returncode == 0:
+                print(f"SVN 업데이트 성공: {local_path}")
+                return True
+            else:
+                print(f"SVN 업데이트 실패 (코드: {result.returncode})")
+                if result.stderr:
+                    print(f"에러: {result.stderr.strip()}")
+                return False
+                
+        except subprocess.TimeoutExpired:
+            print("SVN 업데이트 시간 초과")
+            return False
+        except Exception as e:
+            print(f"SVN 업데이트 오류: {e}")
+            return False
+    
+    def get_svn_info(self, path: str = None) -> dict:
+        """SVN 정보 조회"""
+        try:
+            target_path = path or self.svn_url
+            
+            cmd = ["svn", "info", target_path, "--xml", "--non-interactive"]
+            
+            startupinfo = None
+            if os.name == 'nt':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+            
+            result = subprocess.run(
+                cmd, 
+                capture_output=True, 
+                text=True, 
+                timeout=30,
+                startupinfo=startupinfo
+            )
+            
+            if result.returncode == 0:
+                # XML 파싱 없이 간단한 정보 추출
+                info = {"success": True, "output": result.stdout}
+                return info
+            else:
+                return {"success": False, "error": result.stderr}
+                
+        except subprocess.TimeoutExpired:
+            return {"success": False, "error": "SVN info 조회 시간 초과"}
+        except Exception as e:
+            return {"success": False, "error": f"SVN info 조회 오류: {e}"}
